@@ -1,0 +1,6 @@
+import { useEffect,useState } from "react";
+import { Bell, CalendarDays } from "lucide-react";
+import staffAPI from "../services/staffAPI";
+import PageHeader from "../components/PageHeader";
+import StateMessage from "../components/StateMessage";
+export default function Notifications(){const [items,setItems]=useState([]);const [loading,setLoading]=useState(true);const [error,setError]=useState("");useEffect(()=>{staffAPI.get("/notifications").then(r=>setItems(r.data.notifications||[])).catch(e=>setError(e.response?.data?.message||"Could not load notifications.")).finally(()=>setLoading(false));},[]);return <><PageHeader title="Notifications" subtitle="Recent updates related to your HR workspace."/><StateMessage loading={loading} error={error} empty="You're all caught up. There are no notifications right now."><div className="space-y-3">{items.map((n,i)=><article key={n._id||i} className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-5"><div className="h-fit rounded-xl bg-indigo-50 p-3 text-indigo-600">{n.type==="leave"?<CalendarDays size={20}/>:<Bell size={20}/>}</div><div className="flex-1"><h2 className="font-semibold">{n.title}</h2><p className="mt-1 text-sm leading-6 text-slate-600">{n.message}</p>{n.createdAt&&<p className="mt-2 text-xs text-slate-400">{new Date(n.createdAt).toLocaleString()}</p>}</div></article>)}</div></StateMessage></>}
