@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const staffAPI = axios.create({
-  baseURL: import.meta.env.VITE_STAFF_API_URL || "http://localhost:4000/api/staff",
+  baseURL: import.meta.env.STAFF_API_URL || "http://localhost:4000/api/staff",
 });
 
 staffAPI.interceptors.request.use((config) => {
